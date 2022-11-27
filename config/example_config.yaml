@@ -1,0 +1,27 @@
+# InfluxDB settings
+influx:
+    ip: 192.168.178.10
+    port: 8086
+    user: myuser
+    passwd: 123password123
+    dbname: shelly
+# General options
+sampletime: 60
+debug: false
+# Shelly devices to poll data from
+devices:
+    - name: "Shelly 3EM"
+      ip: 192.168.178.11
+      port: 80
+      user: "shelly"
+      passwd: "password_1"
+    - name: "living room"
+      ip: 192.168.178.12
+      port: 80
+      user: "shelly"
+      passwd: "password_2"
+    - name: "bed room"
+      ip: 192.168.178.13
+      port: 80
+      user: "shelly"
+      passwd: "password_3"

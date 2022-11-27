@@ -1,0 +1,30 @@
+[project]
+name = "ShellyInflux"
+version = "0.1.0"
+description = "An application to periodically read statistics from Shelly devices and pipe them to InfluxDB."
+authors = [{name = "@GiantMolecularCloud"}]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    influxdb>="5"
+    pydantic>="1.10"
+    pyyaml>="6"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=18.3-alpha.0",
+]
+
+[project.urls]
+homepage = "https://github.com/GiantMolecularCloud/shelly-influx"
+documentation = "https://github.com/GiantMolecularCloud/shelly-influx"
+repository = "https://github.com/GiantMolecularCloud/shelly-influx"
+
+
+[tool.black]
+line-length = 120
+target-version = ['py310']
+include = '\.pyi?$'
