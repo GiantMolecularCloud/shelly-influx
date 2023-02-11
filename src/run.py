@@ -8,7 +8,7 @@ import logging
 from pathlib import Path
 from time import sleep
 
-from __init__ import __author__, __version__
+from .__init__ import __author__, __version__
 
 from .config import get_config
 from .influx import Influx
