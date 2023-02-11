@@ -1,3 +1,6 @@
+[![Build image and push to Docker Hub](https://github.com/GiantMolecularCloud/shelly-influx/actions/workflows/build-image.yml/badge.svg)](https://github.com/GiantMolecularCloud/shelly-influx/actions/workflows/build-image.yml)
+
+
 # Shelly to Influx
 
 An application to periodically read statistics from Shelly devices and pipe them to InfluxDB.
