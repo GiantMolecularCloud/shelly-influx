@@ -4,7 +4,7 @@ from typing import Any, Dict
 import influxdb.exceptions as inexc
 from influxdb import InfluxDBClient
 
-from .config import InfluxConfig
+from config import InfluxConfig
 
 
 class Influx:

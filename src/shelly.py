@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional
 
 import requests
 
-from .config import ShellyConfig
+from config import ShellyConfig
 
 
 class Shelly:

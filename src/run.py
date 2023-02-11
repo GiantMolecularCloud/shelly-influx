@@ -10,10 +10,10 @@ from time import sleep
 
 from __init__ import __author__, __version__
 
-from .config import get_config
-from .influx import Influx
-from .shelly import Shelly
-from .timer import RepeatedTimer
+from config import get_config
+from influx import Influx
+from shelly import Shelly
+from timer import RepeatedTimer
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s -  %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("main")
