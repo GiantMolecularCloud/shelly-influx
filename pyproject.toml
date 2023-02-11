@@ -1,6 +1,6 @@
 [project]
 name = "ShellyInflux"
-version = "0.1.1"
+version = "0.1.2"
 description = "An application to periodically read statistics from Shelly devices and pipe them to InfluxDB."
 authors = [{name = "@GiantMolecularCloud"}]
 license = {file = "LICENSE"}
