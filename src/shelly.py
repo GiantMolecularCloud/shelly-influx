@@ -77,7 +77,12 @@ class Shelly:
             measures["request_elapsed"] = request.elapsed.total_seconds()
             if request.status_code == 200:
                 json = request.json()
-                time = datetime.utcfromtimestamp(json["unixtime"])
+                if "unixtime" in json.keys():  # Shelly 3PM
+                    time = datetime.utcfromtimestamp(json["unixtime"])
+                elif "meters0_timestamp" in json.keys():  # Shelly Plug S
+                    time = datetime.utcfromtimestamp(json["meters0_timestamp"])
+                else:
+                    time = request_time
                 measures = self._get_measures_from_json(measures, json)
             else:
                 time = request_time
