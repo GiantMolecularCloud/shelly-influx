@@ -77,3 +77,7 @@ def main(argv: list[str] | None = None) -> None:
     finally:
         for timer in timers:
             timer.stop()
+
+
+if __name__ == "__main__":
+    main()

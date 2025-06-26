@@ -37,7 +37,8 @@ ENV VIRTUAL_ENV=/shelly-influx/.venv \
 
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-COPY src /shelly-influx/
+WORKDIR /shelly-influx
+COPY src/ src/
 
-ENTRYPOINT ["/shelly-influx/.venv/bin/shelly-influx"]
+ENTRYPOINT ["python", "-m", "src.run"]
 CMD ["/config/config.yaml"]
