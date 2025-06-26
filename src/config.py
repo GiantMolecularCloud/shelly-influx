@@ -1,9 +1,9 @@
 import logging
 from pathlib import Path
-from typing import List
+from typing import List, Self
 
 import yaml
-from pydantic import BaseModel, StrictInt, StrictStr, root_validator, validator
+from pydantic import BaseModel, StrictInt, StrictStr, field_validator, model_validator
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s -  %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("config")
@@ -20,22 +20,25 @@ class InfluxConfig(BaseModel):
     passwd: StrictStr = "root"
     dbname: StrictStr = "shelly"
 
-    @root_validator
-    def check_credentials(cls, values):
-        user = values.get("user")
-        passwd = values.get("passwd")
-        if user == "root" and passwd == "root":
+    @model_validator(mode="after")
+    def check_credentials(self) -> Self:
+        if self.user == "root" and self.passwd == "root":
             logger.warning("The default credentials should not be used. Create a dedicated influx user instead.")
-        return values
+        return self
 
 
 class ShellyConfig(BaseModel):
     name: StrictStr
     type: StrictStr
     ip: StrictStr
-    port: StrictInt = 80
     user: StrictStr = "shelly"
     passwd: StrictStr
+
+    @model_validator(mode="after")
+    def check_plus_device_user(self) -> Self:
+        if "Plus" in self.type and self.user != "admin":
+            logger.warning(f'Device "{self.name}" is a Plus device but user is not "admin".')
+        return self
 
 
 class ShellyInfluxConfig(BaseModel):
@@ -48,7 +51,8 @@ class ShellyInfluxConfig(BaseModel):
     debug: bool = False
     devices: List[ShellyConfig]
 
-    @validator("devices")
+    @classmethod
+    @field_validator("devices")
     def check_configured_devices(cls, value: List) -> List:
         if len(value) == 0:
             raise ValueError("No Shelly devices configured.")
@@ -56,7 +60,8 @@ class ShellyInfluxConfig(BaseModel):
             logger.warning("Too many devices may slow the program down. This code does not yet run asynchronously.")
         return value
 
-    @validator("sampletime")
+    @classmethod
+    @field_validator("sampletime")
     def warn_short_sampletime(cls, value: int) -> int:
         if value < 5:
             logger.warning(

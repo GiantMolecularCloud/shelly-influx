@@ -1,3 +1,0 @@
-influxdb>="5"
-pydantic>="1.10"
-pyyaml>="6"
