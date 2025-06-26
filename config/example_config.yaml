@@ -12,16 +12,19 @@ debug: false
 devices:
     - name: "Shelly 3EM"
       ip: 192.168.178.11
-      port: 80
       user: "shelly"
       passwd: "password_1"
     - name: "living room"
       ip: 192.168.178.12
-      port: 80
       user: "shelly"
       passwd: "password_2"
     - name: "bed room"
+      type: "Plug S"
       ip: 192.168.178.13
-      port: 80
       user: "shelly"
       passwd: "password_3"
+    - name: "another room"
+      type: "Plus Plug S"
+      ip: 192.168.178.14
+      user: "admin"
+      passwd: "password_4"
