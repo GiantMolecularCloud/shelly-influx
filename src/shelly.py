@@ -30,7 +30,7 @@ class Shelly:
         if self.debug:
             self.logger.setLevel("DEBUG")
 
-    def _get_measures_from_json(self, measures: dict[str, Any], json: dict[str, Any]) -> dict[str, Any]:
+    def _get_measures_from_json(self, measures: dict[str, Any], json: dict[str, Any]) -> dict[str, Any]:  # noqa:CCR001
         """
         Reformat the nested JSON response from a Shelly into a flat dictionary.
 

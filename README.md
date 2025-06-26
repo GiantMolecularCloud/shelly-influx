@@ -69,5 +69,5 @@ This must be list of devices. If you only configure a single device, it is just 
 | user   | shelly     | User to access the Shelly's web interface.                                       |
 | passwd | no default | Password to access the Shelly's web interface.                                   |
 
-> **Note:**  
+> **Note:**
 > Make sure new devices contain "Plus" in their type field. Note that the default user name for Plus devices is "admin" rather than "shelly".
