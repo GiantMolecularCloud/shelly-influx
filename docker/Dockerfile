@@ -8,7 +8,7 @@
 ############################################################
 # Stage 1: Build environment
 
-FROM python:3.13-slim as builder
+FROM python:3.13-slim AS builder
 
 ARG POETRY_VERSION=2.1
 
@@ -30,7 +30,7 @@ RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --without dev --n
 ############################################################
 # Stage 2: Install project on existing environment
 
-FROM python:3.13-slim as runtime
+FROM python:3.13-slim AS runtime
 
 ENV VIRTUAL_ENV=/shelly-influx/.venv \
     PATH="/shelly-influx/.venv/bin:$PATH"
