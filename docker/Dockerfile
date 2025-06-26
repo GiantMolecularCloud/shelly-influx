@@ -39,5 +39,5 @@ COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 COPY src /shelly-influx/
 
-ENTRYPOINT ["poetry", "run", "shelly-influx"]
+ENTRYPOINT ["/shelly-influx/.venv/bin/shelly-influx"]
 CMD ["/config/config.yaml"]
