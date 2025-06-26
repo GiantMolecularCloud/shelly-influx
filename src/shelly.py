@@ -52,11 +52,15 @@ class Shelly:
             if isinstance(value, list):
                 for idx, listitem in enumerate(value):
                     for listkey, listvalue in listitem.items():
-                        measures[key + f"{idx}_" + listkey] = listvalue
+                        if isinstance(listvalue, list):
+                            for idx2, listitem2 in enumerate(listvalue):
+                                measures[f"{key}{idx}_{listkey}{idx2}"] = listitem2
+                        else:
+                            measures[f"{key}{idx}_{listkey}"] = listvalue
             else:
                 if isinstance(value, dict):
                     for dictkey, dictvalue in value.items():
-                        measures[key + "_" + dictkey] = dictvalue
+                        measures[f"{key}_{dictkey}"] = dictvalue
                 else:
                     measures[key] = value
 
