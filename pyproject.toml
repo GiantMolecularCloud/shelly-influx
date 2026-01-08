@@ -50,7 +50,7 @@ pytest-timeout = "^2"
 twine = "^6.1.0"
 wcwidth = "^0.2.13"
 python-dotenv = "^1.0.1"
-ipython = "^9.3.0"
+ipython = "^9.9.0"
 
 [build-system]
 requires = ["poetry-core"]
