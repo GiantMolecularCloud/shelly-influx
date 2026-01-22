@@ -19,7 +19,7 @@ pyyaml = "^6"
 
 [tool.poetry.group.dev.dependencies]
 pydantic-settings = "2.2.1"
-black = "^25"
+black = "^26"
 coverage = {extras = ["toml"], version = "^7"}
 darglint = "^1.5.8"
 flake8 = "^7"
