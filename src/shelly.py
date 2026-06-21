@@ -1,10 +1,11 @@
 import logging
-from datetime import datetime
-from typing import Any, Dict, Optional
+from datetime import datetime, timezone
+from typing import Any
 
 import requests
+from requests.auth import HTTPDigestAuth
 
-from config import ShellyConfig
+from .config import ShellyConfig
 
 
 class Shelly:
@@ -12,36 +13,41 @@ class Shelly:
 
         self.name = config.name
         self.type = config.type
-        self.ip = config.ip
-        self.port = config.port
-        self.user = config.user
-        self.passwd = config.passwd
         self.timeout = 2
         self.debug = debug
         self.logger = logging.getLogger(self.name)
-        self.request: Optional[requests.request] = None
-        self.influx_data: Optional[list] = None
+        self.request: requests.request | None = None
+        self.influx_data: list[dict] | None = None
+
+        # For Shelly Plus devices, use the PLUGS_UI
+        if "Plus" in self.type:
+            self.uri = f"http://{config.ip}/rpc/Switch.GetStatus?id=0"
+            self.auth = HTTPDigestAuth(config.user, config.passwd)
+        else:
+            self.uri = f"http://{config.ip}/status"
+            self.auth = (config.user, config.passwd)
 
         if self.debug:
             self.logger.setLevel("DEBUG")
 
-    def _get_measures_from_json(self, measures: Dict[str, Any], json: Dict[str, Any]) -> Dict[str, Any]:
+    def _get_measures_from_json(self, measures: dict[str, Any], json: dict[str, Any]) -> dict[str, Any]:  # noqa:CCR001
         """
         Reformat the nested JSON response from a Shelly into a flat dictionary.
 
         Parameters
         ----------
-        measures : Dict[str, Any]
+        measures : dict[str, Any]
             Dictionary with further measures or empty.
-        json : Dict[str, Any]
+        json : dict[str, Any]
             The JSON response from the Shelly.
 
         Returns
         -------
-        Dict[str, Any]
+        dict[str, Any]
             Updated measures dictionary.
         """
 
+        # explode list and dictionaries
         for key, value in json.items():
             if isinstance(value, list):
                 for idx, listitem in enumerate(value):
@@ -57,6 +63,15 @@ class Shelly:
                         measures[f"{key}_{dictkey}"] = dictvalue
                 else:
                     measures[key] = value
+
+        # explode remaining lists
+        for key in list(measures.keys()):
+            value = measures[key]
+            if isinstance(value, list):
+                for idx, item in enumerate(value):
+                    measures[f"{key}_{idx}"] = item
+                del measures[key]
+
         return measures
 
     def query(self) -> None:
@@ -64,27 +79,28 @@ class Shelly:
         Connect to the Shelly and read data from it.
         """
 
-        request_time = datetime.utcnow()
+        request_time = datetime.now(timezone.utc)
         try:
             request = requests.get(
-                f"http://{self.ip}/status",
+                self.uri,
                 verify=False,
-                auth=(self.user, self.passwd),
+                auth=self.auth,
                 timeout=self.timeout,
             )
         except requests.exceptions.Timeout:
             self.logger.info(f"Request to Shelly {self.name} timed out.")
         else:
-            measures = {}
-            measures["request_status_code"] = request.status_code
-            measures["request_reason"] = request.reason
-            measures["request_elapsed"] = request.elapsed.total_seconds()
+            measures = {
+                "request_status_code": request.status_code,
+                "request_reason": request.reason,
+                "request_elapsed": request.elapsed.total_seconds(),
+            }
             if request.status_code == 200:
                 json = request.json()
-                if "unixtime" in json.keys():  # Shelly 3PM
-                    time = datetime.utcfromtimestamp(json["unixtime"])
-                elif "meters0_timestamp" in json.keys():  # Shelly Plug S
-                    time = datetime.utcfromtimestamp(json["meters0_timestamp"])
+                if "unixtime" in json:  # Shelly 3PM
+                    time = datetime.fromtimestamp(json["unixtime"], timezone.utc)
+                elif "meters0_timestamp" in json:  # Shelly Plug S
+                    time = datetime.fromtimestamp(json["meters0_timestamp"], timezone.utc)
                 else:
                     time = request_time
                 measures = self._get_measures_from_json(measures, json)

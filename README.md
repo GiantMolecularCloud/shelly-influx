@@ -1,25 +1,27 @@
 [![Build image and push to Docker Hub](https://github.com/GiantMolecularCloud/shelly-influx/actions/workflows/build-image.yml/badge.svg)](https://github.com/GiantMolecularCloud/shelly-influx/actions/workflows/build-image.yml)
 
-
 # Shelly to Influx
 
 An application to periodically read statistics from Shelly devices and pipe them to InfluxDB.
-All statistics available through the `/status` endpoint are forwarded to Influxdb.
+For old devices (Gen 1), all statistics available through the `/status` endpoint are forwarded to Influxdb.
+Newer devices (Plus devices) are queried through PLUGS_UI at the `/rpc/Switch.GetStatus` endpoint.
 
 Supported (tested) Shelly devices:
 
 -   Shelly 3EM
 -   Shelly 1PM
 -   Shelly Plug S
-    Other devices should work as well because this script just takes all available data and reformats them in a way that InfluxDB accepts.
+-   Shelly Plus Plug S
+
+Other devices should work as well because this script just takes all available data and reformats them in a way that InfluxDB accepts.
 
 Built docker images are available on [Docker Hub](https://hub.docker.com/r/giantmolecularcloud/shelly-influx).
 
 ## Local execution
 
--   Install requirements: `pip install -r docker/requirements.txt`
+-   Install project: `poetry install`
 -   Customize the config file `config/example_config.py`
--   And run: `python src/run.py config/customized_config.py`
+-   And run: `poetry run shelly-influx config/customized_config.py`
 
 ## docker
 
@@ -59,11 +61,13 @@ Options of the section `influx`.
 
 This must be list of devices. If you only configure a single device, it is just a list with a single entry.
 
-| config | default    | explanation                                                                       |
-| ------ | ---------- | --------------------------------------------------------------------------------- |
-| name   | no default | Identifier for the Shelly. This will be the name of the measurement in InfluxDB.  |
-| type   | no default | Type of Shelly. Meant to correctly treat different models but not used currently. |
-| ip     | no default | IP address of the Shelly device.                                                  |
-| port   | 80         | Port of the Shelly device.                                                        |
-| user   | shelly     | User to access the Shelly's web interface.                                        |
-| passwd | no default | Password to access the Shelly's web interface.                                    |
+| config | default    | explanation                                                                      |
+| ------ | ---------- | -------------------------------------------------------------------------------- |
+| name   | no default | Identifier for the Shelly. This will be the name of the measurement in InfluxDB. |
+| type   | no default | Type of Shelly.                                                                  |
+| ip     | no default | IP address of the Shelly device.                                                 |
+| user   | shelly     | User to access the Shelly's web interface.                                       |
+| passwd | no default | Password to access the Shelly's web interface.                                   |
+
+> **Note:**
+> Make sure new devices contain "Plus" in their type field. Note that the default user name for Plus devices is "admin" rather than "shelly".
