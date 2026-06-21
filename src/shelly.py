@@ -16,10 +16,11 @@ class Shelly:
         self.timeout = 2
         self.debug = debug
         self.logger = logging.getLogger(self.name)
-        self.request: requests.request | None = None
         self.influx_data: list[dict] | None = None
 
         # For Shelly Plus devices, use the PLUGS_UI
+        self.uri: str
+        self.auth: HTTPDigestAuth | tuple[str, str]
         if "Plus" in self.type:
             self.uri = f"http://{config.ip}/rpc/Switch.GetStatus?id=0"
             self.auth = HTTPDigestAuth(config.user, config.passwd)

@@ -5,9 +5,9 @@ An application to periodically read statistics from Shelly devices and pipe them
 
 import argparse
 import logging
+import sys
 from pathlib import Path
 from time import sleep
-import sys
 
 from .config import get_config
 from .influx import Influx
@@ -18,14 +18,12 @@ from .version import __author__, __version__
 logging.basicConfig(level=logging.INFO, format="%(asctime)s -  %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("main")
 
-parser = argparse.ArgumentParser(
-    description=f"""
+parser = argparse.ArgumentParser(description=f"""
 An application to periodically read statistics from Shelly devices and pipe them to InfluxDB.
 Version: {__version__}
 Author: {__author__}
 Link: https://github.com/GiantMolecularCloud/shelly-influx
-"""
-)
+""")
 parser.add_argument("configfile", metavar="config", type=Path, nargs="?", help="The configuration file to load.")
 parser.add_argument("--version", action="version", version=f"ShellyInflux {__version__}")
 
@@ -65,7 +63,9 @@ def main(argv: list[str] | None = None) -> None:
     for device in config.devices:
         logger.info(f"        - {device.name} ({device.ip})")
     logger.info(f"    Sample time: {config.sampletime} seconds")
-    logger.info(f"    InfluxDB at {config.influx.ip}:{config.influx.port} with database '{config.influx.dbname}' and user '{config.influx.user}'")
+    logger.info(
+        f"    InfluxDB at {config.influx.ip}:{config.influx.port} with database '{config.influx.dbname}' and user '{config.influx.user}'"
+    )
     logger.debug(config.model_dump_json(indent=4))
 
     try:
@@ -73,7 +73,7 @@ def main(argv: list[str] | None = None) -> None:
     except ConnectionError as e:
         logger.error("Could not connect to InfluxDB. Exiting program.\n", e)
         sys.exit(1)
-    
+
     shellies = [Shelly(device_config, config.debug) for device_config in config.devices]
 
     timers = []

@@ -29,11 +29,15 @@ class Influx:
                 break
             except Exception as e:
                 if attempt == max_attempts - 1:
-                    self.logger.error(f"Could not connect to InfluxDB at {config.ip}:{config.port} after {max_attempts} attempts.\n", e)
-                    raise ConnectionError(
-                        f"Could not connect to InfluxDB at {config.ip}:{config.port} after {max_attempts} attempts.\n", e
+                    self.logger.error(
+                        f"Could not connect to InfluxDB at {config.ip}:{config.port} after {max_attempts} attempts.\n",
+                        e,
                     )
-                wait_seconds = 2 ** attempt
+                    raise ConnectionError(
+                        f"Could not connect to InfluxDB at {config.ip}:{config.port} after {max_attempts} attempts.\n",
+                        e,
+                    ) from e
+                wait_seconds = 2**attempt
                 self.logger.warning(
                     f"Could not connect to InfluxDB at {config.ip}:{config.port} (attempt {attempt + 1}/{max_attempts}). Wait {wait_seconds}s before retrying."
                     f"Retrying in {wait_seconds}s..."
