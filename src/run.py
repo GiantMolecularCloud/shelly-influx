@@ -56,11 +56,16 @@ def main(argv: list[str] | None = None) -> None:
     args = parser.parse_args(argv)
     config = get_config(args.configfile)
 
-    logger.info("Loaded configuration:")
-    logger.info(config.model_dump_json(indent=4))
-
     if config.debug:
         logger.setLevel("DEBUG")
+
+    logger.info("Loaded configuration:")
+    logger.info(f"    {len(config.devices)} devices configured:")
+    for device in config.devices:
+        logger.info(f"        - {device.name} ({device.ip})")
+    logger.info(f"    Sample time: {config.sampletime} seconds")
+    logger.info(f"    InfluxDB at {config.influx.ip}:{config.influx.port} with database '{config.influx.dbname}' and user '{config.influx.user}'")
+    logger.debug(config.model_dump_json(indent=4))
 
     influx = Influx(config.influx, config.debug)
     shellies = [Shelly(device_config, config.debug) for device_config in config.devices]

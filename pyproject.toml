@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "shelly-influx"
-version = "0.2.1"
+version = "0.2.2"
 description = "An application to periodically read statistics from Shelly devices and pipe them to InfluxDB."
 authors = ["GiantMolecularCloud <26749617+GiantMolecularCloud@users.noreply.github.com>"]
 readme = "README.md"
