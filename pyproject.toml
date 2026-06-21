@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "shelly-influx"
-version = "0.2.1"
+version = "0.2.2"
 description = "An application to periodically read statistics from Shelly devices and pipe them to InfluxDB."
 authors = ["GiantMolecularCloud <26749617+GiantMolecularCloud@users.noreply.github.com>"]
 readme = "README.md"
@@ -19,12 +19,12 @@ pyyaml = "^6"
 
 [tool.poetry.group.dev.dependencies]
 pydantic-settings = "2.2.1"
-black = "^25"
+black = "^26"
 coverage = {extras = ["toml"], version = "^7"}
 darglint = "^1.5.8"
 flake8 = "^7"
 flake8-annotations = "^3"
-flake8-black = "^0.3.2"
+flake8-black = "^0.4.0"
 flake8-bugbear = "^25"
 flake8-cognitive-complexity = "^0.1.0"
 flake8-comprehensions = "^3.3.1"
@@ -39,7 +39,7 @@ isort = "^6.0.1"
 mypy = "^1"
 pep8-naming = "^0.15.1"
 pip-licenses = "^5"
-poethepoet = "^0.34"
+poethepoet = "^0.40"
 pre-commit = "^4"
 pytest = {version = "^9"}
 pytest-cov = "^7"
@@ -48,9 +48,9 @@ pytest-rerunfailures = "^16"
 pytest-sugar = "^1"
 pytest-timeout = "^2"
 twine = "^6.1.0"
-wcwidth = "^0.2.13"
+wcwidth = "^0.3.0"
 python-dotenv = "^1.0.1"
-ipython = "^9.3.0"
+ipython = "^9.9.0"
 
 [build-system]
 requires = ["poetry-core"]
