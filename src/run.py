@@ -7,6 +7,7 @@ import argparse
 import logging
 from pathlib import Path
 from time import sleep
+import sys
 
 from .config import get_config
 from .influx import Influx
@@ -67,7 +68,12 @@ def main(argv: list[str] | None = None) -> None:
     logger.info(f"    InfluxDB at {config.influx.ip}:{config.influx.port} with database '{config.influx.dbname}' and user '{config.influx.user}'")
     logger.debug(config.model_dump_json(indent=4))
 
-    influx = Influx(config.influx, config.debug)
+    try:
+        influx = Influx(config.influx, config.debug)
+    except ConnectionError as e:
+        logger.error("Could not connect to InfluxDB. Exiting program.\n", e)
+        sys.exit(1)
+    
     shellies = [Shelly(device_config, config.debug) for device_config in config.devices]
 
     timers = []
