@@ -48,7 +48,7 @@ pytest-rerunfailures = "^16"
 pytest-sugar = "^1"
 pytest-timeout = "^2"
 twine = "^6.1.0"
-wcwidth = "^0.3.0"
+wcwidth = ">=0.3,<0.9"
 python-dotenv = "^1.0.1"
 ipython = "^9.9.0"
 
