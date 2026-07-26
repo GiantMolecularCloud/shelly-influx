@@ -2656,17 +2656,17 @@ python-discovery = ">=1.4.2"
 
 [[package]]
 name = "wcwidth"
-version = "0.3.5"
+version = "0.8.2"
 description = "Measures the displayed width of unicode strings in a terminal"
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "wcwidth-0.3.5-py3-none-any.whl", hash = "sha256:b0a0245130566939a24ab8432e625b38272fbc62ecbe5aecbdcb50b8f02ce993"},
-    {file = "wcwidth-0.3.5.tar.gz", hash = "sha256:7c3463f312540cf21ddd527ea34f3ae95c057fa191aa7a9e043898d20d636e59"},
+    {file = "wcwidth-0.8.2-py3-none-any.whl", hash = "sha256:d63947694a0539a1d51e01eda7caf800c291020e6cdd7e28ad7b14dd33ad4f85"},
+    {file = "wcwidth-0.8.2.tar.gz", hash = "sha256:91fbef97204b96a3d4d421609b80340b760cf33e26da123ff243d76b1fda8dda"},
 ]
 
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "7dac13b6e6534f38607cce2f5007aef4f714d6e401646d602f324c532fadf363"
+content-hash = "c92d9d4549794dea327123eecf54230fcbdf4b247e6b5bf7a5013481b85e023a"
