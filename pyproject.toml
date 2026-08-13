@@ -18,7 +18,7 @@ pydantic = "^2.11"
 pyyaml = "^6"
 
 [tool.poetry.group.dev.dependencies]
-pydantic-settings = "2.14.2"
+pydantic-settings = "2.15.0"
 black = "^26"
 coverage = {extras = ["toml"], version = "^7"}
 darglint = "^1.5.8"
